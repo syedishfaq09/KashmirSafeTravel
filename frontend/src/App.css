@@ -1,0 +1,17 @@
+/* App styles will be added here later */
+.destination-card {
+  transition: all 0.3s ease;
+}
+
+.destination-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+footer a {
+  transition: 0.3s;
+}
+
+footer a:hover {
+  color: #6f42c1 !important;
+}
