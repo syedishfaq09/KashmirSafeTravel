@@ -8,7 +8,7 @@ const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
-console.log(process.env.MONGO_URI);
+// console.log(process.env.MONGO_URI);
 
 connectDB();
 
