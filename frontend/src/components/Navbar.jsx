@@ -16,8 +16,19 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
       <div className="container">
-        <Link className="navbar-brand fw-bold" to="/">
-          🏔 Kashmir Safe Travel
+        <Link className="navbar-brand d-flex align-items-center fw-bold" to="/">
+          <img
+            src="/images/logo.png"
+            alt="Kashmir Safe Travel"
+            width="40"
+            height="40"
+            className="me-2"
+            style={{
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+          Kashmir Safe Travel
         </Link>
 
         <button
