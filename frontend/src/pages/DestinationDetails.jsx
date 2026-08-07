@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import destinationDetails from "../data/destinationDetails";
 
@@ -6,6 +7,18 @@ function DestinationDetails() {
   const navigate = useNavigate();
 
   const data = destinationDetails[name];
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    fetch(
+      `https://kashmir-safe-travel-api.onrender.com/api/weather/${data.name}`,
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        setWeather(result);
+      })
+      .catch((err) => console.error(err));
+  }, [data.name]);
 
   if (!data) {
     return (
@@ -55,7 +68,14 @@ function DestinationDetails() {
           <div className="row mt-5">
             <div className="col-md-3">
               <h5>🌦 Weather</h5>
-              <p>{data.weather}</p>
+              {weather ? (
+                <>
+                  <p>🌡️ {weather.current.temp_c}°C</p>
+                  <p>☁️ {weather.current.condition.text}</p>
+                </>
+              ) : (
+                <p>Loading...</p>
+              )}
             </div>
 
             <div className="col-md-3">
