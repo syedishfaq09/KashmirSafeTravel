@@ -11,7 +11,7 @@ function DestinationDetails() {
 
   useEffect(() => {
     fetch(
-      `https://kashmir-safe-travel-api.onrender.com/api/weather/${data.name}`,
+      `https://kashmir-safe-travel-backend.onrender.com/api/weather/${data.name}`,
     )
       .then((res) => res.json())
       .then((result) => {
