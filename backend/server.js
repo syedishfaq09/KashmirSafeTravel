@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 dotenv.config();
 // console.log(process.env.MONGO_URI);
@@ -27,6 +28,8 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use("/api/weather", weatherRoutes);
+
+app.use("/api/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   res.send("Kashmir Safe Travel Backend Running 🚀");
