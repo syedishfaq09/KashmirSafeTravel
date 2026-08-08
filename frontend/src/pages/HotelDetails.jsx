@@ -4,14 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 function HotelDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [reviews, setReviews] = useState([]);
-
-  // const [userName, setUserName] = useState("");
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
 
+  // Submit review
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,7 +42,7 @@ function HotelDetails() {
         setRating(5);
         setComment("");
       } else {
-        alert(data.message);
+        alert(data.message || "Failed to submit review");
       }
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -50,12 +50,14 @@ function HotelDetails() {
     }
   };
 
+  // Fetch reviews
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/reviews/${id}`,
         );
+
         const data = await response.json();
 
         setReviews(data);
@@ -100,15 +102,26 @@ function HotelDetails() {
 
             <ul className="list-group mb-4">
               <li className="list-group-item">✅ Free Wi-Fi</li>
+
               <li className="list-group-item">✅ Restaurant</li>
+
               <li className="list-group-item">✅ Free Parking</li>
+
               <li className="list-group-item">✅ Room Service</li>
+
               <li className="list-group-item">✅ Mountain View</li>
             </ul>
 
+            {/* Book Now */}
             <button
               className="btn custom-btn btn-lg"
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                if (user) {
+                  navigate("/booking");
+                } else {
+                  navigate("/login");
+                }
+              }}
             >
               Book Now
             </button>
@@ -123,23 +136,30 @@ function HotelDetails() {
                 onSubmit={handleReviewSubmit}
                 className="card p-4 shadow-sm"
               >
+                {/* Logged-in user's name */}
                 <p className="fw-semibold mb-3">
                   Reviewing as:{" "}
                   <span className="text-primary">{user.name}</span>
                 </p>
 
+                {/* Rating */}
                 <select
                   className="form-select mb-3"
                   value={rating}
                   onChange={(e) => setRating(Number(e.target.value))}
                 >
                   <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+
                   <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+
                   <option value="3">⭐⭐⭐ 3 Stars</option>
+
                   <option value="2">⭐⭐ 2 Stars</option>
+
                   <option value="1">⭐ 1 Star</option>
                 </select>
 
+                {/* Comment */}
                 <textarea
                   className="form-control mb-3"
                   rows="4"
@@ -149,14 +169,17 @@ function HotelDetails() {
                   required
                 ></textarea>
 
+                {/* Submit */}
                 <button type="submit" className="btn custom-btn">
                   Submit Review
                 </button>
               </form>
             </div>
           ) : (
+            /* User not logged in */
             <div className="mt-5 text-center">
               <h4 className="fw-bold">Want to write a review?</h4>
+
               <p className="text-muted">
                 Please login to share your experience.
               </p>
@@ -170,7 +193,7 @@ function HotelDetails() {
             </div>
           )}
 
-          {/* Reviews */}
+          {/* Guest Reviews */}
           <div className="mt-5">
             <h3 className="fw-bold mb-4">Guest Reviews</h3>
 
