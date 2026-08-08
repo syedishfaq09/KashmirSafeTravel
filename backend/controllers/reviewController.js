@@ -28,7 +28,20 @@ const addReview = async (req, res) => {
   }
 };
 
+const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ reviewDate: -1 });
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching all reviews",
+    });
+  }
+};
+
 module.exports = {
   getReviews,
   addReview,
+  getAllReviews,
 };

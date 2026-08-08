@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AddHotel from "./pages/AddHotel";
 import ManageHotels from "./pages/ManageHotels";
 import HotelDetails from "./pages/HotelDetails";
+import AdminReviews from "./pages/AdminReviews";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/add-hotel" element={<AddHotel />} />
         <Route path="/admin/manage-hotels" element={<ManageHotels />} />
+        <Route path="/admin/reviews" element={<AdminReviews />} />
       </Routes>
     </BrowserRouter>
   );

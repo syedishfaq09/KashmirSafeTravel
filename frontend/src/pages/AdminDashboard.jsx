@@ -30,6 +30,13 @@ function AdminDashboard() {
             >
               Manage Hotels
             </button>
+
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/admin/reviews")}
+            >
+              Manage Reviews
+            </button>
           </div>
         </div>
       </div>
