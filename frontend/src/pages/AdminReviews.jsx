@@ -4,6 +4,38 @@ import BackButton from "../components/BackButton";
 function AdminReviews() {
   const [reviews, setReviews] = useState([]);
 
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this review?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/reviews/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok) {
+        alert("Review deleted successfully!");
+
+        setReviews((prevReviews) =>
+          prevReviews.filter((review) => review._id !== id),
+        );
+      } else {
+        alert(data.message || "Failed to delete review");
+      }
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      alert("Could not connect to the server. Please try again.");
+    }
+  };
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -44,10 +76,20 @@ function AdminReviews() {
 
                 <p className="mb-2">{review.comment}</p>
 
-                <small className="text-muted">
+                <div className="text-muted small">
                   Reviewed on:{" "}
                   {new Date(review.reviewDate).toLocaleDateString("en-GB")}
-                </small>
+                </div>
+
+                <div className="mt-3">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(review._id)}
+                  >
+                    Delete Review
+                  </button>
+                </div>
               </div>
             </div>
           ))
