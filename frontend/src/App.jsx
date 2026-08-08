@@ -17,6 +17,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AddHotel from "./pages/AddHotel";
 import ManageHotels from "./pages/ManageHotels";
+import HotelDetails from "./pages/HotelDetails";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
 
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotels/:destination" element={<Hotels />} />
+        <Route path="/hotel/:id" element={<HotelDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/booking" element={<Booking />} />

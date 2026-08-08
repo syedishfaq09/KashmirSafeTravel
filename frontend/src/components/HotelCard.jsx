@@ -28,11 +28,7 @@ function HotelCard({ hotel }) {
 
           <button
             className="btn custom-btn w-100"
-            onClick={() =>
-              navigate("/booking", {
-                state: { hotel },
-              })
-            }
+            onClick={() => navigate(`/hotel/${hotel._id}`)}
           >
             Book Now →
           </button>
