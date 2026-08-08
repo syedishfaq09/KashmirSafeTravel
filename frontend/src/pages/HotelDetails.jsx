@@ -4,10 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 function HotelDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [reviews, setReviews] = useState([]);
 
-  const [userName, setUserName] = useState("");
+  // const [userName, setUserName] = useState("");
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
 
@@ -24,7 +25,7 @@ function HotelDetails() {
           },
           body: JSON.stringify({
             hotelId: id,
-            userName,
+            userName: user.name,
             rating,
             comment,
           }),
@@ -38,7 +39,6 @@ function HotelDetails() {
 
         setReviews([...reviews, data]);
 
-        setUserName("");
         setRating(5);
         setComment("");
       } else {
@@ -115,45 +115,60 @@ function HotelDetails() {
           </div>
 
           {/* Write a Review */}
-          <div className="mt-5">
-            <h3 className="fw-bold mb-4">Write a Review</h3>
+          {user ? (
+            <div className="mt-5">
+              <h3 className="fw-bold mb-4">Write a Review</h3>
 
-            <form onSubmit={handleReviewSubmit} className="card p-4 shadow-sm">
-              <input
-                type="text"
-                className="form-control mb-3"
-                placeholder="Your Name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
-
-              <select
-                className="form-select mb-3"
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
+              <form
+                onSubmit={handleReviewSubmit}
+                className="card p-4 shadow-sm"
               >
-                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
-                <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-                <option value="3">⭐⭐⭐ 3 Stars</option>
-                <option value="2">⭐⭐ 2 Stars</option>
-                <option value="1">⭐ 1 Star</option>
-              </select>
+                <p className="fw-semibold mb-3">
+                  Reviewing as:{" "}
+                  <span className="text-primary">{user.name}</span>
+                </p>
 
-              <textarea
-                className="form-control mb-3"
-                rows="4"
-                placeholder="Write your review..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                required
-              ></textarea>
+                <select
+                  className="form-select mb-3"
+                  value={rating}
+                  onChange={(e) => setRating(Number(e.target.value))}
+                >
+                  <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                  <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                  <option value="3">⭐⭐⭐ 3 Stars</option>
+                  <option value="2">⭐⭐ 2 Stars</option>
+                  <option value="1">⭐ 1 Star</option>
+                </select>
 
-              <button type="submit" className="btn custom-btn">
-                Submit Review
+                <textarea
+                  className="form-control mb-3"
+                  rows="4"
+                  placeholder="Write your review..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  required
+                ></textarea>
+
+                <button type="submit" className="btn custom-btn">
+                  Submit Review
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div className="mt-5 text-center">
+              <h4 className="fw-bold">Want to write a review?</h4>
+              <p className="text-muted">
+                Please login to share your experience.
+              </p>
+
+              <button
+                className="btn custom-btn"
+                onClick={() => navigate("/login")}
+              >
+                Login to Review
               </button>
-            </form>
-          </div>
+            </div>
+          )}
 
           {/* Reviews */}
           <div className="mt-5">
