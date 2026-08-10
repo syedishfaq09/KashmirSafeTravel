@@ -10,6 +10,9 @@ function DestinationDetails() {
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
+    // Stop if destination does not exist
+    if (!data) return;
+
     fetch(
       `https://kashmir-safe-travel-backend.onrender.com/api/weather/${data.name}?t=${Date.now()}`,
       {
@@ -21,13 +24,29 @@ function DestinationDetails() {
         setWeather(result);
       })
       .catch((err) => console.error(err));
-  }, [data.name]);
+  }, [data]);
 
+  // If destination is not found
   if (!data) {
     return (
-      <div className="container py-5">
-        <h2>Destination not found.</h2>
-      </div>
+      <section className="py-5">
+        <div className="container">
+          <div className="card shadow-sm text-center p-5">
+            <h2 className="fw-bold">Destination Not Found</h2>
+
+            <p className="text-muted mt-3">
+              Sorry, we couldn't find a destination named "{name}".
+            </p>
+
+            <button
+              className="btn custom-btn mt-3"
+              onClick={() => navigate("/")}
+            >
+              ← Back to Home
+            </button>
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -71,6 +90,7 @@ function DestinationDetails() {
           <div className="row mt-5">
             <div className="col-md-3">
               <h5>🌦 Weather</h5>
+
               {weather ? (
                 <>
                   <p>🌡️ {weather.current.temp_c}°C</p>
