@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import HotelCard from "./HotelCard";
-import BackButton from "../components/BackButton";
 
-function FeaturedHotels({ destination }) {
+function FeaturedHotels({ destination, searchQuery }) {
   const [hotelData, setHotelData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,11 +25,21 @@ function FeaturedHotels({ destination }) {
     fetchHotels();
   }, []);
 
-  const filteredHotels = destination
-    ? hotelData.filter(
-        (hotel) => hotel.location.toLowerCase() === destination.toLowerCase(),
-      )
-    : hotelData;
+  // Filter hotels
+  const filteredHotels = hotelData.filter((hotel) => {
+    // First filter by destination if one is selected
+    const matchesDestination = destination
+      ? hotel.location?.toLowerCase() === destination.toLowerCase()
+      : true;
+
+    // Then filter by search query
+    const matchesSearch = searchQuery
+      ? hotel.hotelName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        hotel.location?.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
+    return matchesDestination && matchesSearch;
+  });
 
   if (loading) {
     return (
@@ -70,7 +79,11 @@ function FeaturedHotels({ destination }) {
             ))
           ) : (
             <div className="col-12 text-center py-5">
-              <h4>No hotels found.</h4>
+              <h4 className="fw-bold">No hotels found.</h4>
+
+              <p className="text-muted">
+                Try searching for another hotel or location.
+              </p>
             </div>
           )}
         </div>
