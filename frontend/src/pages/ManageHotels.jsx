@@ -217,15 +217,6 @@ function ManageHotels() {
                 />
 
                 <input
-                  type="number"
-                  step="0.1"
-                  className="form-control mb-3"
-                  placeholder="Rating"
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                />
-
-                <input
                   type="text"
                   className="form-control"
                   placeholder="Image URL"
