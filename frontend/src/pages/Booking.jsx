@@ -14,6 +14,28 @@ function Booking() {
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("");
 
+  // If no hotel was selected
+  if (!hotel) {
+    return (
+      <section className="py-5">
+        <div className="container text-center">
+          <h3 className="fw-bold">No hotel selected</h3>
+
+          <p className="text-muted">
+            Please select a hotel before making a booking.
+          </p>
+
+          <button
+            className="btn custom-btn"
+            onClick={() => navigate("/hotels")}
+          >
+            Browse Hotels
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   const handleBooking = async (e) => {
     e.preventDefault();
 
@@ -42,10 +64,10 @@ function Booking() {
         alert("✅ Booking Successful!");
         navigate("/booking-success");
       } else {
-        alert(data.message);
+        alert(data.message || "Booking failed");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error creating booking:", error);
       alert("Server Error");
     }
   };
@@ -58,21 +80,20 @@ function Booking() {
           style={{ maxWidth: "600px" }}
         >
           <BackButton />
+
           <h2 className="text-center fw-bold mb-4">Hotel Booking</h2>
 
-          {hotel && (
-            <div className="alert alert-light border mb-4">
-              <h5 className="fw-bold">{hotel.hotelName}</h5>
+          {/* Selected Hotel */}
+          <div className="alert alert-light border mb-4">
+            <h5 className="fw-bold">{hotel.hotelName}</h5>
 
-              <p className="mb-1">📍 {hotel.location}</p>
+            <p className="mb-1">📍 {hotel.location}</p>
 
-              <p className="mb-0 text-success fw-bold">
-                ₹{hotel.price} / night
-              </p>
-            </div>
-          )}
+            <p className="mb-0 text-success fw-bold">₹{hotel.price} / night</p>
+          </div>
 
           <form onSubmit={handleBooking}>
+            {/* Name */}
             <input
               type="text"
               className="form-control mb-3"
@@ -82,6 +103,7 @@ function Booking() {
               required
             />
 
+            {/* Phone */}
             <input
               type="tel"
               className="form-control mb-3"
@@ -91,6 +113,7 @@ function Booking() {
               required
             />
 
+            {/* Check-in */}
             <label className="fw-semibold mb-2">Check-in Date</label>
 
             <input
@@ -101,6 +124,7 @@ function Booking() {
               required
             />
 
+            {/* Check-out */}
             <label className="fw-semibold mb-2">Check-out Date</label>
 
             <input
@@ -111,6 +135,7 @@ function Booking() {
               required
             />
 
+            {/* Guests */}
             <label className="fw-semibold mb-2">Number of Guests</label>
 
             <select
@@ -127,6 +152,7 @@ function Booking() {
               <option value="5">5+ Guests</option>
             </select>
 
+            {/* Submit */}
             <button type="submit" className="btn custom-btn w-100">
               Confirm Booking
             </button>

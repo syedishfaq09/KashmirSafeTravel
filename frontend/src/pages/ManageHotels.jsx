@@ -14,7 +14,7 @@ function ManageHotels() {
   const [hotelName, setHotelName] = useState("");
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
-  const [rating, setRating] = useState("");
+
   const [image, setImage] = useState("");
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function ManageHotels() {
     setHotelName(hotel.hotelName);
     setLocation(hotel.location);
     setPrice(hotel.price);
-    setRating(hotel.rating);
+
     setImage(hotel.image);
   };
 
@@ -87,7 +87,7 @@ function ManageHotels() {
             hotelName,
             location,
             price: Number(price),
-            rating: Number(rating),
+
             image,
           }),
         },

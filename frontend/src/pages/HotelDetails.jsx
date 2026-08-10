@@ -8,6 +8,8 @@ function HotelDetails() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [reviews, setReviews] = useState([]);
+  const [hotel, setHotel] = useState(null);
+  const [hotelLoading, setHotelLoading] = useState(true);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
 
@@ -37,7 +39,25 @@ function HotelDetails() {
       if (response.ok) {
         alert("Review submitted successfully!");
 
-        setReviews([...reviews, data]);
+        setReviews((currentReviews) => [data, ...currentReviews]);
+
+        setHotel((currentHotel) => {
+          const oldReviewCount = currentHotel.reviewCount ?? 0;
+          const newReviewCount = oldReviewCount + 1;
+
+          const newRating = Number(
+            (
+              (currentHotel.rating * oldReviewCount + data.rating) /
+              newReviewCount
+            ).toFixed(1),
+          );
+
+          return {
+            ...currentHotel,
+            rating: newRating,
+            reviewCount: newReviewCount,
+          };
+        });
 
         setRating(5);
         setComment("");
@@ -51,6 +71,7 @@ function HotelDetails() {
   };
 
   // Fetch reviews
+  // Fetch reviews
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -59,7 +80,6 @@ function HotelDetails() {
         );
 
         const data = await response.json();
-
         setReviews(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -69,6 +89,37 @@ function HotelDetails() {
     fetchReviews();
   }, [id]);
 
+  // Fetch this hotel's information and calculated rating
+  useEffect(() => {
+    const fetchHotel = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/hotels/${id}`,
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setHotel(data);
+        } else {
+          alert(data.message || "Hotel not found");
+        }
+      } catch (error) {
+        console.error("Error fetching hotel:", error);
+      } finally {
+        setHotelLoading(false);
+      }
+    };
+
+    fetchHotel();
+  }, [id]);
+  if (hotelLoading) {
+    return <div className="text-center py-5">Loading hotel...</div>;
+  }
+
+  if (!hotel) {
+    return <div className="text-center py-5">Hotel not found.</div>;
+  }
   return (
     <section className="py-5 bg-light">
       <div className="container">
@@ -76,21 +127,23 @@ function HotelDetails() {
           {/* Hotel Image */}
           <div className="col-lg-6 mb-4">
             <img
-              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200"
-              alt="Hotel"
+              src={hotel.image}
+              alt={hotel.hotelName}
               className="img-fluid rounded-4 shadow"
             />
           </div>
 
           {/* Hotel Information */}
           <div className="col-lg-6">
-            <h1 className="fw-bold">The Khyber Himalayan Resort</h1>
+            <h1 className="fw-bold">{hotel.hotelName}</h1>
 
-            <p className="text-muted fs-5">Gulmarg, Jammu & Kashmir</p>
+            <p className="text-muted fs-5">{hotel.location}</p>
 
-            <h3 className="text-warning">⭐ 4.9</h3>
+            <h3 className="text-warning">
+              ⭐ {hotel.rating} ({hotel.reviewCount} reviews)
+            </h3>
 
-            <h2 className="text-success my-3">₹14500 / Night</h2>
+            <h2 className="text-success my-3">₹{hotel.price} / Night</h2>
 
             <p className="lead">
               Experience luxury surrounded by the breathtaking mountains of
@@ -117,7 +170,11 @@ function HotelDetails() {
               className="btn custom-btn btn-lg"
               onClick={() => {
                 if (user) {
-                  navigate("/booking");
+                  navigate("/booking", {
+                    state: {
+                      hotel,
+                    },
+                  });
                 } else {
                   navigate("/login");
                 }

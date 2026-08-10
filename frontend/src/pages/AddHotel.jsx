@@ -5,7 +5,7 @@ function AddHotel() {
   const [hotelName, setHotelName] = useState("");
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
-  const [rating, setRating] = useState("");
+
   const [image, setImage] = useState("");
 
   const handleAddHotel = async (e) => {
@@ -23,7 +23,7 @@ function AddHotel() {
             hotelName,
             location,
             price: Number(price),
-            rating: Number(rating),
+
             image,
           }),
         },
@@ -37,7 +37,7 @@ function AddHotel() {
         setHotelName("");
         setLocation("");
         setPrice("");
-        setRating("");
+
         setImage("");
       } else {
         alert(data.message);
@@ -83,16 +83,6 @@ function AddHotel() {
               placeholder="Price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-
-            <input
-              type="number"
-              step="0.1"
-              className="form-control mb-3"
-              placeholder="Rating"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
               required
             />
 
