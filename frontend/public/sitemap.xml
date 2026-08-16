@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/</loc>
+  </url>
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/destinations</loc>
+  </url>
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/hotels</loc>
+  </url>
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/tour-packages</loc>
+  </url>
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/safety-map</loc>
+  </url>
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/report-scam</loc>
+  </url>
+
+  <url>
+    <loc>https://kashmir-safe-travel.netlify.app/about</loc>
+  </url>
+
+</urlset>
